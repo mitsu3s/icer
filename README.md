@@ -52,6 +52,19 @@ Send ICMP Redirect Message (Redirect Datagram for the Network):
 $ ./icer -t 5 -c 0
 ```
 
+### Configuration
+The IP address settings can be modified in the configuration file located at [`data/config.yaml`](https://github.com/mitsu3s/icer/blob/main/data/config.yaml).
+```yaml
+# data/config.yaml
+real_ip: # IP used for sending/receiving
+  src_ip: "192.168.0.8"
+  dst_ip: "192.168.20.20"
+
+error_ip: # IP causing the error
+  src_ip: "10.10.10.10"
+  dst_ip: "20.20.20.20"
+```
+
 ### Other Command
 - `help`
 Show usage information

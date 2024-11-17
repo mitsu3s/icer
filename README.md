@@ -21,7 +21,7 @@ To install ICER, follow the steps below:
 
 ```sh
 # Install this repository
-$ git clone git@github.com:mitus3s/icer
+$ git clone git@github.com:mitus3s/icer.git
 
 # Move to the command directory
 $ cd icer/cmd

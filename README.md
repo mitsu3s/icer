@@ -58,6 +58,14 @@ Show usage information
 - `version`
 Show icer version
 
+> [!IMPORTANT]
+> Since the operation has been checked only on Linux, operation on other operating systems is not guaranteed.
+
+
+## Contributing
+Thank you for considering contributing to our source code! We deeply appreciate any contributions, no matter how small, and we are truly grateful for your help.
+
+If you encounter any issues, please feel free to [icer issues](https://github.com/mitsu3s/icer/issues) in this repository. We are happy to assist you!
 
 ## LICENSE
 

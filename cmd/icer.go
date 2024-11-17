@@ -28,14 +28,22 @@ import (
 )
 
 func main() {
-	var cmd = &cobra.Command{Use: "icer"}
+	var typeCode uint8
+	var code uint8
 
+	// ICER Command
 	var icerCmd = &cobra.Command{
-		Use:   "icer",
-		Short: longMessage,
-		Long:  longMessage,
+		Use:          "icer",
+		Short:        shortMessage,
+		Long:         longMessage,
+		SilenceUsage: true,
 	}
 
+	// Add required flags
+	icerCmd.Flags().Uint8VarP(&typeCode, "type", "t", 0, "Type for the ICMP (3=unreachable, 5=redirect, 11=time exceeded)")
+	icerCmd.Flags().Uint8VarP(&code, "code", "c", 0, "Code for the ICMP")
+
+	// Version Command
 	var versionCmd = &cobra.Command{
 		Use:   "version",
 		Short: "Show icer version",
@@ -44,10 +52,9 @@ func main() {
 		},
 	}
 
-	cmd.AddCommand(icerCmd)
-	cmd.AddCommand(versionCmd)
+	// Add version command to ICER command
+	icerCmd.AddCommand(versionCmd)
 
-	if err := cmd.Execute(); err != nil {
-		fmt.Println(err)
-	}
+	// Execute ICER command
+	icerCmd.Execute()
 }

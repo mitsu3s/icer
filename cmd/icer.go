@@ -24,6 +24,7 @@ package main
 import (
 	"fmt"
 
+	"github.com/mitsu3s/icer/internal"
 	"github.com/spf13/cobra"
 )
 
@@ -33,9 +34,31 @@ func main() {
 
 	// ICER Command
 	var icerCmd = &cobra.Command{
-		Use:          "icer",
-		Short:        shortMessage,
-		Long:         longMessage,
+		Use:   "icer",
+		Short: shortMessage,
+		Long:  longMessage,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			switch typeCode {
+			case 3: // Destination Unreachable
+				if code > 15 {
+					return fmt.Errorf("invalid code for type 3 (unreachable): %d (must be between 0 and 15)", code)
+				}
+				internal.Unreachable(code)
+			case 5: // Redirect
+				if code > 15 {
+					return fmt.Errorf("invalid code for type 5 (redirect): %d (must be between 0 and 15)", code)
+				}
+				internal.Redirect(code)
+			case 11: // Time Exceeded
+				if code > 1 {
+					return fmt.Errorf("invalid code for type 11 (time exceeded): %d (must be 0 or 1)", code)
+				}
+				internal.Exceeded(code)
+			default:
+				return fmt.Errorf("unknown or unsupported type: %d", typeCode)
+			}
+			return nil
+		},
 		SilenceUsage: true,
 	}
 

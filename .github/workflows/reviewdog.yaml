@@ -1,62 +1,31 @@
-name: reviewdog
+# name: reviewdog
 
-on:
-  push:
-    branches:
-      - main
-      - "feature/**"
-  pull_request:
-    branches:
-      - main
-      - "feature/**"
+# on:
+#   push:
+#     branches:
+#       - main
+#       - "feature/**"
+#   pull_request:
+#     branches:
+#       - main
+#       - "feature/**"
 
-jobs:
-  golangci-lint:
-    name: Reviewdog
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pull-requests: write
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+# jobs:
+#   golangci-lint:
+#     name: Reviewdog
+#     runs-on: ubuntu-latest
+#     permissions:
+#       contents: read
+#       pull-requests: write
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v4
 
-      # - name: Set up Go 1.23.3
-      #   uses: actions/setup-go@v5
-      #   with:
-      #     go-version: "1.23.3"
-
-      - name: Run golangci-lint with reviewdog
-        uses: reviewdog/action-golangci-lint@v2.8.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          golangci_lint_flags: "--config=.golangci.yaml"
-          reporter: github-pr-review
-          filter_mode: nofilter
-          go_version: "1.23.3"
-
-      #   with:
-      #     # optionally use a specific version of Go rather than the latest one
-      #     go_version: "1.23.3"
-
-      #     # Can pass --config flag to change golangci-lint behavior and target
-      #     # directory.
-      #     golangci_lint_flags: "--config=.github/.golangci.yaml"
-
-      # - name: Get dependencies
-      #   run: |
-      #     go mod tidy
-
-      # - name: Install golangci, reviewdog
-      #   run: |
-      #     go install github.com/golangci/golangci-lint/cmd/golangci-lint@v2.1.6
-      #     go install github.com/reviewdog/reviewdog/cmd/reviewdog@latest
-
-      # - name: Run reviewdog
-      #   env:
-      #     REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   run: |
-      #     golangci-lint run --config=.golangci.yaml ./... \
-      #       | reviewdog -f=golangci-lint -reporter=github-check -filter-mode=nofilter -fail-level=error
+#       - name: Run golangci-lint with reviewdog
+#         uses: reviewdog/action-golangci-lint@v2.8.0
+#         with:
+#           github_token: ${{ secrets.GITHUB_TOKEN }}
+#           golangci_lint_flags: "--config=.golangci.yaml"
+#           reporter: github-pr-review
+#           filter_mode: nofilter
+#           go_version: "1.23.3"

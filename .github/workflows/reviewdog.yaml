@@ -24,14 +24,17 @@ jobs:
           go-version: "1.23.3"
 
       - name: Run golangci-lint with reviewdog
+        env:
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: reviewdog/action-golangci-lint@v2.8.0
-        # with:
-        #   # optionally use a specific version of Go rather than the latest one
-        #   go_version: "1.23.3"
 
-        #   # Can pass --config flag to change golangci-lint behavior and target
-        #   # directory.
-        #   golangci_lint_flags: "--config=.github/.golangci.yaml"
+      #   with:
+      #     # optionally use a specific version of Go rather than the latest one
+      #     go_version: "1.23.3"
+
+      #     # Can pass --config flag to change golangci-lint behavior and target
+      #     # directory.
+      #     golangci_lint_flags: "--config=.github/.golangci.yaml"
 
       # - name: Get dependencies
       #   run: |

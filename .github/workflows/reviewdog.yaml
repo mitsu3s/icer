@@ -29,7 +29,7 @@ jobs:
 
       - name: Install golangci, reviewdog
         run: |
-          go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+          go install github.com/golangci/golangci-lint/cmd/golangci-lint@v2.1.0
           go install github.com/reviewdog/reviewdog/cmd/reviewdog@latest
 
       - name: Run reviewdog

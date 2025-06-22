@@ -14,6 +14,9 @@ jobs:
   golangci-lint:
     name: Reviewdog
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -28,7 +31,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           golangci_lint_flags: "--config=.golangci.yaml"
-          reporter: github-pr-check
+          reporter: github-pr-review
           filter_mode: nofilter
           go_version: "1.23.3"
 

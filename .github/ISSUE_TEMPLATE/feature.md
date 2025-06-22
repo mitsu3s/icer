@@ -1,6 +1,6 @@
 ---
 name: "Feature Request"
-about: "新規アイデアまたは機能拡張を提案""
+about: "新規アイデアまたは機能拡張を提案"
 title: ""
 labels: enhancement
 assignees: ""

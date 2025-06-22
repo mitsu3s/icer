@@ -30,7 +30,11 @@ linters:
         text: do not define dynamic errors, use wrapped static errors instead
       - linters:
           - mnd
+          - exhaustruct
         path: ^internal/
+      - linters:
+          - mnd
+        path: ^cmd/
 
 formatters:
   enable:

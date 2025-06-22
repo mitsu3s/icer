@@ -1,26 +1,25 @@
-# name: reviewdog
+name: reviewdog
 
-# on:
-#   push:
-#     branches:
-#       - main
-#       - "feature/**"
-#   pull_request:
-#     branches:
-#       - main
-#       - "feature/**"
+on:
+  push:
+    branches:
+      - main
+      - "feature/**"
+  pull_request:
+    branches:
+      - main
+      - "feature/**"
 
-# jobs:
-#   golangci-lint:
-#     name: Reviewdog
-#     runs-on: ubuntu-latest
-#     permissions:
-#       contents: read
-#       pull-requests: write
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@v4
-
+jobs:
+  golangci-lint:
+    name: Reviewdog
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 #       - name: Run golangci-lint with reviewdog
 #         uses: reviewdog/action-golangci-lint@v2.8.0
 #         with:

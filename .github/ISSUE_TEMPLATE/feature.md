@@ -1,6 +1,6 @@
 ---
 name: "Feature Request"
-about: "Propose new ideas or feature enhancements"
+about: "新規アイデアまたは機能拡張を提案""
 title: ""
 labels: enhancement
 assignees: ""
@@ -8,14 +8,14 @@ assignees: ""
 
 # **Feature Request**
 
-## Description
+## 詳細
 
 <!-- Please replace {Please write here} with your description -->
 
-### Actual operation
+### 実際の動作
 
 <!-- {Please write here} -->
 
-### Reproduction procedure (including prerequisites)
+### 再現手順（前提条件を含む）
 
 <!-- {Please write here} -->

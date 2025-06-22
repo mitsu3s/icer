@@ -1,0 +1,30 @@
+name: reviewdog
+
+on:
+  push:
+    branches:
+      - main
+      - "feature/**"
+  pull_request:
+    branches:
+      - main
+      - "feature/**"
+
+jobs:
+  golangci-lint:
+    name: Reviewdog
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+#       - name: Run golangci-lint with reviewdog
+#         uses: reviewdog/action-golangci-lint@v2.8.0
+#         with:
+#           github_token: ${{ secrets.GITHUB_TOKEN }}
+#           golangci_lint_flags: "--config=.golangci.yaml"
+#           reporter: github-pr-review
+#           filter_mode: nofilter
+#           go_version: "1.23.3"

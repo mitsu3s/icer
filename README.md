@@ -2,7 +2,7 @@
 
 ICER is a tool designed for sending ICMP error messages to a specified target.
 It can be used for testing and debugging network configurations, simulating network
-errors, or analyzing how systems handle ICMP error responses. 
+errors, or analyzing how systems handle ICMP error responses.
 
 > [!CAUTION]
 > Use with caution, as improper use may violate network policies or disrupt services.
@@ -11,7 +11,7 @@ errors, or analyzing how systems handle ICMP error responses.
 
 | Language/FrameWork | Version |
 | :----------------- | ------: |
-| Go                 |  1.22.9 |
+| Go                 |  1.23.3 |
 
 ## Installation
 
@@ -22,7 +22,7 @@ Install ICER, follow the steps below:
 $ git clone git@github.com:mitus3s/icer.git
 
 # Move to the command directory
-$ cd icer/cmd
+$ cd cmd
 
 # Build the executable
 $ go build -o icer

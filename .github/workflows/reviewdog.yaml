@@ -25,4 +25,4 @@ jobs:
 #           golangci_lint_flags: "--config=.golangci.yaml"
 #           reporter: github-pr-review
 #           filter_mode: nofilter
-#           go_version: "1.23.3"
+#           go_version: "1.25.8"

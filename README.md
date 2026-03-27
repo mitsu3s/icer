@@ -1,89 +1,133 @@
-# ICER
+# icer
 
-ICER is a tool designed for sending ICMP error messages to a specified target.
-It can be used for testing and debugging network configurations, simulating network
-errors, or analyzing how systems handle ICMP error responses.
+`icer` is a command-line tool designed for crafting and sending precise ICMP error messages (such as Destination Unreachable, Redirect, or Time Exceeded) to a specified target. 
+
+It is useful for testing and debugging network configurations, simulating network errors, or validating how routers and application firewalls handle ICMP error responses.
 
 > [!CAUTION]
-> Use with caution, as improper use may violate network policies or disrupt services.
+> Use with caution. Improper use may violate network policies, disrupt services, or trigger intrusion detection systems. You generally need `root` or `CAP_NET_RAW` capabilities to send raw packets.
 
-## Requirement
+> [!NOTE]
+> ICMP error messages (Type 3, 5, 11) are **one-way notifications** and do not have acknowledgment responses like TCP. This tool measures whether packets were successfully submitted to the OS network stack, not whether they reached the destination.
 
-| Language/FrameWork | Version |
-| :----------------- | ------: |
-| Go                 |  1.23.3 |
+## Requirements
+
+- Go 1.25+
 
 ## Installation
 
-Install ICER, follow the steps below:
+You can install `icer` easily via `go install`:
 
 ```sh
-# Install this repository
-$ git clone git@github.com:mitus3s/icer.git
+go install github.com/mitsu3s/icer/cmd/icer@latest
+```
 
-# Move to the command directory
-$ cd cmd
+Once installed, verify it's working:
 
-# Build the executable
-$ go build -o icer
-
+```sh
+icer version
 ```
 
 ## Usage
 
-Run the icer with the following syntax:
+`icer` features a modern subcommand architecture:
 
 ```sh
-$ ./icer [flags/commands]
+icer [command] [flags]
 ```
 
-### Flags
+### Supported Commands
 
-- `-t`, `--type`
-  Specify the ICMP Type (e.g., 3 for Destination Unreachable, 5 for Redirect Message, 11 for Time Exceeded).
+- `send` - Send ICMP error packets
+- `list-types` - Show supported ICMP types and codes
+- `init` - Generate a sample configuration file
+- `version` - Show the current version
 
-- `-c`, `--code`
-  Specify the ICMP Code corresponding to the Type.
+### Examples
 
-### Example
+**1. CLI-only Sending (No config file required)**
 
-Send ICMP Redirect Message (Redirect Datagram for the Network):
+You can send a one-off ICMP error message by specifying the outer IP headers (for the ICMP packet itself) and the inner IP headers (the original packet being quoted in the ICMP error body).
 
 ```sh
-# ICMP Redirect (Type=5, Code=0)
-$ ./icer -t 5 -c 0
+# Send ICMP Destination Unreachable (Type 3, Code 0)
+sudo icer send -t 3 -c 0 \
+  --src 192.168.1.1 --dst 192.168.1.10 \
+  --error-src 10.0.0.1 --error-dst 10.0.0.10
 ```
 
-### Configuration
+**2. Send Multiple Packets**
 
-The IP address settings can be modified in the configuration file located at [`data/config.yaml`](https://github.com/mitsu3s/icer/blob/main/data/config.yaml).
+```sh
+# Send 5 packets, 1 second apart
+sudo icer send -t 3 -c 1 --count 5 --interval 1s \
+  --src 192.168.1.1 --dst 192.168.1.10 \
+  --error-src 10.0.0.1 --error-dst 10.0.0.10
+```
+
+**3. Dry Run Mode**
+
+Simulate sending without actually opening a raw socket (useful if running without root privileges):
+
+```sh
+icer send -t 5 -c 0 --dry-run -v \
+  --src 192.168.1.1 --dst 192.168.1.10 \
+  --error-src 10.0.0.1 --error-dst 10.0.0.10
+```
+
+**4. Check Supported ICMP Types**
+
+```sh
+icer list-types
+
+# Output:
+# Type 3: Destination Unreachable
+#   Indicates that a destination is unreachable
+#   Code 0: Network Unreachable
+#   Code 1: Host Unreachable
+# ...
+```
+
+## Configuration Profiles
+
+If you frequently test against the same targets, you can use configuration profiles.
+
+1. Generate a sample config:
+   ```sh
+   icer init
+   ```
+   *This creates `~/.config/icer/config.yaml`.*
+
+2. Use a profile to send packets:
+   ```sh
+   sudo icer send -t 3 -c 0 -p default
+   # Or for a specific profile in your config:
+   sudo icer send -t 3 -c 0 -p web-servers
+   ```
+
+A profile config file allows defining complex targets, for example:
 
 ```yaml
-# data/config.yaml
-real_ip: # IP used for sending/receiving
-  src_ip: "192.168.10.10"
-  dst_ip: "192.168.20.20"
-
-error_ip: # IP causing the error
-  src_ip: "10.10.10.10"
-  dst_ip: "20.20.20.20"
+profiles:
+  - name: "multi-target"
+    description: "Hit multiple servers at once"
+    targets:
+      - real_ip: { src_ip: "192.168.1.1", dst_ip: "192.168.1.10" }
+        error_ip: { src_ip: "10.0.0.1", dst_ip: "10.0.0.10" }
+      - real_ip: { src_ip: "192.168.1.1", dst_ip: "192.168.1.11" }
+        error_ip: { src_ip: "10.0.0.1", dst_ip: "10.0.0.11" }
 ```
 
-### Other Command
+## Troubleshooting
 
-- `help`
-  Show usage information
-- `version`
-  Show icer version
-
-> [!IMPORTANT]
-> Since the operation has been checked only on Linux, operation on other operating systems is not guaranteed.
+- **"socket: operation not permitted"**: You must run `icer` as root (`sudo icer ...`) or grant raw socket capabilities (`setcap cap_net_raw+ep $(which icer)`).
+- **"unknown or unsupported type"**: Run `icer list-types` to see which type and code combinations are allowed.
 
 ## Contributing
 
 Thank you for considering contributing to our source code! We deeply appreciate any contributions, no matter how small, and we are truly grateful for your help.
 
-If you encounter any issues, please feel free to [icer issues](https://github.com/mitsu3s/icer/issues) in this repository. We are happy to assist you!
+If you encounter any issues, please feel free to [open an issue](https://github.com/mitsu3s/icer/issues) in this repository.
 
 ## LICENSE
 

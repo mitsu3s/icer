@@ -19,7 +19,7 @@ builds:
   - env:
       - CGO_ENABLED=0
     dir: .
-    main: ./cmd
+    main: ./cmd/icer
     goos:
       - linux
       - darwin
